@@ -1,0 +1,21 @@
+/*
+* File: Main.css
+* Names: Jasper Loverude, Muqing Wen, Matthew Cerrato
+* Class: CS 361
+* Project 2
+* Date: February 14, 2022
+*/
+
+.helloStyle {
+    -fx-background-color: #90EE90;
+    -fx-border-radius: .25em;
+    -fx-background-radius: .25em;
+    -fx-border-color: #000000;
+}
+
+.goodbyeStyle {
+    -fx-background-color: #FFC0CB;
+    -fx-border-radius: .25em;
+    -fx-background-radius: .25em;
+    -fx-border-color: #000000;
+}
