@@ -26,7 +26,6 @@ public class FileIO
 {
     private TabPane editorTabs;
 
-
     /**
      * FileIO Class Constructor
      * 
@@ -37,7 +36,7 @@ public class FileIO
         this.editorTabs = editorTabs;
     }
 
-    // should move to tabs class
+    // Maybe move to a tabs class
     private TextArea textArea(){
         Tab currentTab = this.editorTabs.getSelectionModel().getSelectedItem();
         TextArea textArea = (TextArea) currentTab.getContent();
