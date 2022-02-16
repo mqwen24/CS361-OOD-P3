@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  File: Main.fxml
+  Names : Jasper Loverude, Muqing Wen, Matthew Cerrato
+  Class: CS 361
+  Project 2
+  Date: February 14, 2022
+-->
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox prefHeight="325.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="proj2LoverudeCerratoWen.Main">
+  <children>
+    <MenuBar VBox.vgrow="ALWAYS">
+      <menus>
+        <Menu mnemonicParsing="false" text="File">
+          <items>
+            <MenuItem fx:id="menuClearButton" mnemonicParsing="false" onAction="#menuClearButtonPressed" text="Clear" />
+            <MenuItem fx:id="menuExitButton" mnemonicParsing="false" onAction="#menuExitButtonPressed" text="Exit" />
+          </items>
+        </Menu>
+      </menus>
+    </MenuBar>
+      <ToolBar prefHeight="40.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+        <items>
+          <Button fx:id="helloButton" mnemonicParsing="false" stylesheets="@Main.css" styleClass="helloStyle" onAction="#helloButtonPressed" text="Hello" />
+            <Button fx:id="goodbyeButton" mnemonicParsing="false" stylesheets="@Main.css" styleClass="goodbyeStyle" onAction="#goodbyeButtonPressed" text="Goodbye" />
+        </items>
+      </ToolBar>
+      <TextArea fx:id="textArea" prefHeight="200.0" prefWidth="200.0" text="Sample Text" VBox.vgrow="ALWAYS" />
+  </children>
+</VBox>
