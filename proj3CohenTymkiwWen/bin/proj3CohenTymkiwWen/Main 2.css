@@ -1,0 +1,14 @@
+
+.success{
+    -fx-background-color: #90EE90;
+    -fx-border-radius: .25em;
+    -fx-background-radius: .25em;
+    -fx-border-color: #000000;
+}
+
+.warning{
+    -fx-background-color: #FFC0CB;
+    -fx-border-radius: .25em;
+    -fx-background-radius: .25em;
+    -fx-border-color: #000000;
+}

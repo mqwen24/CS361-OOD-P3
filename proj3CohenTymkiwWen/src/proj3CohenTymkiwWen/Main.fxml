@@ -23,7 +23,7 @@
   <children>
     <MenuBar VBox.vgrow="ALWAYS">
       <menus>
-        <Menu mnemonicParsing="false" text="File">
+        <Menu mnemonicParsing="false" text="About">
           <items>
                   <MenuItem fx:id="menuAboutButton" mnemonicParsing="false" onAction="#menuAboutButtonPressed" text="About" />
                   <SeparatorMenuItem mnemonicParsing="false" />
@@ -36,6 +36,11 @@
             <MenuItem fx:id="menuExitButton" mnemonicParsing="false" onAction="#menuExitButtonPressed" text="Exit" />
           </items>
         </Menu>
+            <Menu mnemonicParsing="false" text="Edit">
+              <items>
+                <MenuItem mnemonicParsing="false" text="Action 1" />
+              </items>
+            </Menu>
       </menus>
     </MenuBar>
       <ToolBar prefHeight="40.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
@@ -49,6 +54,11 @@
           <Tab text="Tab 1">
                <content>
                   <TextArea fx:id="textArea" prefHeight="235.0" prefWidth="500.0" text="Sample Text" />
+      <TabPane prefHeight="213.0" prefWidth="500.0" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
+        <tabs>
+          <Tab text="Untitled Tab 1">
+               <content>
+                  <TextArea fx:id="textArea" prefHeight="181.0" prefWidth="500.0" text="Sample Text" VBox.vgrow="ALWAYS" />
                </content>
             </Tab>
         </tabs>
