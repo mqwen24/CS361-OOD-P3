@@ -16,12 +16,14 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 
 import javafx.application.Application;
+
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-
-import javafx.scene.control.Button;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.*;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 
 
 /**
@@ -43,11 +45,34 @@ public class Main extends Application{
     @FXML
     private Button goodbyeButton;
 
+    // @FXML
+    // private MenuItem menuClearButton; //We have to delete this I think
+
     @FXML
-    private MenuItem menuClearButton;
+    private MenuItem menuAboutButton;
+
+    @FXML
+    private MenuItem menuNewButton;
+
+    @FXML
+    private MenuItem menuOpenButton;
+
+    @FXML
+    private MenuItem menuSaveButton;
+
+    @FXML
+    private MenuItem menuSaveAsButton;
+
+    @FXML
+    private MenuItem menuCloseButton;
 
     @FXML
     private MenuItem menuExitButton;
+
+    @FXML
+    private TabPane tabPane;
+
+
 
     /**
     *
@@ -133,6 +158,43 @@ public class Main extends Application{
 
     }
 
+    /**
+    *
+    * An action method, activated when fx:id="menuExitButton" recieves an interaction.
+    * This method exits the application
+    *
+    * @author  Dylan Tymkiw, Muqing Wen, Erik Cohen
+    * @return  void
+    * @see     About window pops up
+    */
+    
+    public void menuAboutButtonPressed(){
+        // Sets up a Dialogue in form of an Alert
+        Alert aboutDialogue = new Alert(AlertType.INFORMATION); 
+        
+        aboutDialogue.setTitle("About");
+        //Set the content of the dialogue box
+        aboutDialogue.setContentText("This actually took some time to figure out.\n Authors:\n Muqin Wen, Erik Cohen, Dylan Tymkiw");
+
+        aboutDialogue.show();
+    }
+
+
+    // This the correct form of doing it I think, but We have to move it to the start method
+    // public void menuSaveAsButtonPressed(){
+    //     FileChooser fileChooser = new FileChooser();
+    //     fileChooser.setTitle("Save as");
+    //     fileChooser.showSaveDialog(stage);
+    // }
+
+    //This creates a new tab but we need to make it the topmost one
+    @FXML
+    public void menuNewButtonPressed(){
+        Tab tab = new Tab("Tab");
+        tabPane.getTabs().add(tab);
+        tab.setContent(new TextArea("Sample text"));
+    }
+
 
     /**
     *
@@ -150,6 +212,7 @@ public class Main extends Application{
     @Override
     public void start(Stage appStage)
     {
+
         /* Uses tryCatch to catch IOExceptions*/
         try{
 
