@@ -9,9 +9,16 @@
 */
 package proj3CohenTymkiwWen;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.application.Application;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.Parent;
@@ -25,11 +32,20 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import java.util.Dictionary;
+import javafx.scene.input.Clipboard;
+import javafx.scene.input.ClipboardContent;
+import javafx.stage.FileChooser.ExtensionFilter;
 
 
 public class Main extends Application{
 
     private Dictionary<String, TextHistory> textHistory;
+
+    private Clipboard systemClipboard = Clipboard.getSystemClipboard();
+
+    private FileChooser fileChooser = new FileChooser();
+
+    
 
     @FXML
     private Button helloButton;
@@ -71,7 +87,13 @@ public class Main extends Application{
     */
     @FXML
     void saveFileAs(ActionEvent event) {
-
+        fileChooser.setTitle("Save");
+        fileChooser.getExtensionFilters().addAll(new ExtensionFilter("All Files", "*.*"));
+        Stage thisStage = (Stage) textArea().getScene().getWindow();
+        File file = fileChooser.showSaveDialog(thisStage);
+        if(file != null){
+            SaveFile(textArea().getText(), file);
+        }
     }
 
     /**
@@ -88,6 +110,11 @@ public class Main extends Application{
     @FXML
     void copy(ActionEvent event) {
 
+        ClipboardContent content = new ClipboardContent();
+        content.putString(textArea().getSelectedText());// This could cause the program to crash if the user hasn't selected anything. We could create a helper method to avoid this
+        systemClipboard.setContent(content);
+
+
     }
 
     /**
@@ -102,16 +129,19 @@ public class Main extends Application{
     * pastes clipboard text into current file.
     */
     @FXML
-    void paste(ActionEvent event) {
+    void paste(ActionEvent event) { 
+
 
     }
+
+
 
     /**
     * highlights all text in current tab 
     */
     @FXML
     void selectAll(ActionEvent event) {
-
+        textArea().selectAll();
     }
 
     /**
@@ -190,7 +220,7 @@ public class Main extends Application{
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Main.fxml"));
             Parent root = (Parent) fxmlLoader.load();
             Scene scene = new Scene(root);
-            this.textHistory.put(currentTab().getId(), new TextHistory());
+            //this.textHistory.put(currentTab().getId(), new TextHistory()); -- I commented this out because it was preventing the code from running. DT
             scene.getStylesheets().add(getClass().getResource("Main.css").toExternalForm());
             primaryStage.setTitle("EC, DT, MW et al.'s Project 2");
             primaryStage.setScene(scene);
@@ -218,6 +248,21 @@ public class Main extends Application{
         TextArea textArea = (TextArea) currentTab().getContent();
         return textArea;
     }
+
+    //Helper method to save files
+    private void SaveFile(String content, File file){
+        try {
+            FileWriter fileWriter;
+             
+            fileWriter = new FileWriter(file);
+            fileWriter.write(content);
+            fileWriter.close();
+        } catch (IOException ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+        }
+         
+    }
+
 
     /**
      * Creates a window with interactable buttons
