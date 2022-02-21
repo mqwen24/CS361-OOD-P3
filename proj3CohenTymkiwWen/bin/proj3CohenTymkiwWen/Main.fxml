@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <!-- 
 File: Main.
 Names: Erik Cohen, Dylan Tymkiw, Muqing Wen
@@ -57,7 +58,7 @@ Date: February 18, 2022
         <tabs>
           <Tab text="Untitled Tab ">
                <content>
-                  <TextArea prefHeight="200.0" prefWidth="200.0" text="Sample text" />
+                  <TextArea onKeyReleased="#saveState" prefHeight="200.0" prefWidth="200.0" text="Sample text" />
                </content>
           </Tab>
         </tabs>

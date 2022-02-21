@@ -1,46 +1,36 @@
 package proj3CohenTymkiwWen;
 
-import java.util.ArrayList;
+import java.util.Stack;
 
 public class TextHistory
 {
-    private ArrayList<String> history;
-    private Integer historyPointer;
+    private Stack<String> undo ;
+    private Stack<String> redo;
 
-    public void editorHistory(){
-        this.history = new ArrayList<String>();
-        this.historyPointer = -1;
+    public TextHistory(){
+        this.undo = new Stack<String>();
+        this.redo = new Stack<String>();
     }
 
     public void save(String save) {
-        if(canRedo()){
-            //clear redos so new save is at end of tracked changes
-            this.history = 
-                        new ArrayList<String>(this.history.subList(0, historyPointer));
-        }
-        this.history.add(save);
-        historyPointer++;
+        this.redo.clear();
+        this.undo.add(save);
     }
 
-    public String backtrack() {
-        if(this.historyPointer < 0){
-            return null;
+    public String undo() {
+        if(! this.undo.isEmpty()){
+            String lastState = this.undo.pop();
+            this.redo.add(lastState);
+            return this.undo.peek();
         }
-        return this.history.get(--historyPointer);
+        return null;
     }
 
     public String redo(){
-        if(!canRedo()){
-            return null;
+        if(! this.redo.isEmpty()){
+            return this.redo.pop();
         }
-        return this.history.get(++historyPointer);
-    }
-
-    private Boolean canRedo(){
-        if(this.history.size() > this.historyPointer + 1){
-            return true;
-        }
-        return false;
+        return null;
     }
 }
 

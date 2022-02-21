@@ -31,16 +31,21 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.Tab;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
-import java.util.Dictionary;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 import javafx.stage.FileChooser.ExtensionFilter;
-import javafx.stage.FileChooser;
+import java.util.Map;
+import java.util.HashMap;
+import javafx.scene.input.KeyEvent;
 
 
 public class Main extends Application{
 
-    private Dictionary<String, TextHistory> textHistory;
+    private Map<String, TextHistory> textHistory 
+        = new HashMap<String, TextHistory>();
+
+    private Map<String, String> filePaths
+        = new HashMap<String, String>();
 
     private Clipboard systemClipboard = Clipboard.getSystemClipboard();
 
@@ -95,6 +100,8 @@ public class Main extends Application{
         if(file != null){
             SaveFile(textArea().getText(), file);
         }
+
+        currentTab().setText(file.getName());
     }
 
     /**
@@ -148,12 +155,34 @@ public class Main extends Application{
         textArea().selectAll();
     }
 
+    @FXML
+    void saveState(KeyEvent event) {
+        TextHistory currentHistory = this.textHistory.get(currentTab().getId());
+        if(currentHistory != null){
+            System.out.println("Offer to existing");
+            currentHistory.save(textArea().getText());
+
+        }else{
+            System.out.println("Create stack");
+            this.textHistory.put(currentTab().getId(), new TextHistory());
+            System.out.println("offer State");
+            currentHistory = this.textHistory.get(currentTab().getId());
+            currentHistory.save(textArea().getText());
+        }
+    }
+
     /**
     * undoes an action if there is undo history
     */
     @FXML
     void undo(ActionEvent event) {
-        //this.textHistory.get(currentTab().getId()).backtrack(); -- can be null if no undo 
+        TextHistory tabHistory = this.textHistory.get(currentTab().getId());
+        String lastState = tabHistory.undo();
+        if(lastState != null){
+            textArea().setText(lastState);
+        }else{
+            System.out.println("error dialog");
+        }
     }
 
     /**
@@ -161,7 +190,13 @@ public class Main extends Application{
     */
     @FXML
     void redo(ActionEvent event) {
-        //this.textHistory.get(currentTab().getId()).redo();-- can be null if no redo 
+        TextHistory tabHistory = this.textHistory.get(currentTab().getId());
+        String nextState = tabHistory.redo();
+        if(nextState != null){
+            textArea().setText(nextState);
+        }else{
+            System.out.println("error dialog");
+        }
     }
 
     @FXML
@@ -224,7 +259,6 @@ public class Main extends Application{
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Main.fxml"));
             Parent root = (Parent) fxmlLoader.load();
             Scene scene = new Scene(root);
-            //this.textHistory.put(currentTab().getId(), new TextHistory()); -- I commented this out because it was preventing the code from running. DT
             scene.getStylesheets().add(getClass().getResource("Main.css").toExternalForm());
             primaryStage.setTitle("EC, DT, MW et al.'s Project 2");
             primaryStage.setScene(scene);
