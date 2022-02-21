@@ -9,6 +9,7 @@ import java.util.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.Button;
@@ -224,6 +225,7 @@ public class Controller {
                 return;
             }
         }
+        Platform.exit();
     }
 
     @FXML
