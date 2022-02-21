@@ -34,9 +34,18 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 import javafx.stage.FileChooser.ExtensionFilter;
+<<<<<<< Updated upstream
 import java.util.Map;
 import java.util.HashMap;
 import javafx.scene.input.KeyEvent;
+=======
+
+import java.io.*;
+
+
+
+
+>>>>>>> Stashed changes
 
 
 public class Main extends Application{
@@ -62,7 +71,7 @@ public class Main extends Application{
 
     @FXML
     void newFile(ActionEvent event) {
-        Tab tab = new Tab("Tab");
+        Tab tab = new Tab("New Tab");
         editorTabs.getTabs().add(tab);
         tab.setContent(new TextArea("Sample text"));
         this.textHistory.put(tab, new TextHistory());
@@ -74,7 +83,14 @@ public class Main extends Application{
     */
     @FXML
     void openFile(ActionEvent event) {
+        Stage thisStage = (Stage) textArea().getScene().getWindow();
+        fileChooser.setTitle("Open Resource File");
+        File file = fileChooser.showOpenDialog(thisStage);
+        if (file != null){
+            textArea().setText(readFile(file));
+        }
 
+        currentTab().setText(file.getName());
     }
     
     /**
@@ -84,8 +100,17 @@ public class Main extends Application{
     */
     @FXML
     void saveFile(ActionEvent event) {
-
+        File currentFile = new File("./" + currentTab().getText() ); //This needs to be done differently
+        if (currentFile.exists()){
+            SaveFile(textArea().getText(), currentFile);
+        }
+        else{
+            saveFileAs(event);
+        }
+        
     }
+
+    
 
     /**
     * prompts user to save file with a specific name
@@ -101,6 +126,10 @@ public class Main extends Application{
             SaveFile(textArea().getText(), file);
         }
 
+<<<<<<< Updated upstream
+=======
+        //set name of tab to name of file
+>>>>>>> Stashed changes
         currentTab().setText(file.getName());
     }
 
@@ -109,7 +138,15 @@ public class Main extends Application{
     */
     @FXML
     void closeFile(ActionEvent event) {
-
+        File currentFile = new File("./" + currentTab().getText() );// Again, this does not work
+        if (currentFile.exists()){
+            currentTab().getTabPane().getTabs().remove(currentTab());
+        }
+        else{
+            saveFileAs(event);
+            currentTab().getTabPane().getTabs().remove(currentTab());
+        }
+        
     }
 
     /**
@@ -302,6 +339,36 @@ public class Main extends Application{
         }
          
     }
+
+    //Helper method to read files
+    private String readFile(File file){
+        StringBuilder stringBuffer = new StringBuilder();
+        BufferedReader bufferedReader = null;
+        
+        try {
+
+            bufferedReader = new BufferedReader(new FileReader(file));
+            
+            String text;
+            while ((text = bufferedReader.readLine()) != null) {
+                stringBuffer.append(text);
+            }
+
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                bufferedReader.close();
+            } catch (IOException ex) {
+                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } 
+        
+        return stringBuffer.toString();
+    }
+
 
 
     /**
