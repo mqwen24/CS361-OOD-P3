@@ -224,6 +224,7 @@ public class Controller {
                 return;
             }
         }
+        System.exit(0);
     }
 
     @FXML
