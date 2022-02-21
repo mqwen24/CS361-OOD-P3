@@ -27,6 +27,8 @@ import javafx.scene.control.TabPane;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextInputDialog;
 import java.util.Optional;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.ButtonBar;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.Tab;
 import javafx.scene.control.Alert;
@@ -34,19 +36,10 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 import javafx.stage.FileChooser.ExtensionFilter;
-<<<<<<< Updated upstream
 import java.util.Map;
 import java.util.HashMap;
 import javafx.scene.input.KeyEvent;
-=======
-
 import java.io.*;
-
-
-
-
->>>>>>> Stashed changes
-
 
 public class Main extends Application{
 
@@ -60,21 +53,20 @@ public class Main extends Application{
 
     private FileChooser fileChooser = new FileChooser();
 
-    
-
     @FXML
     private Button helloButton;
 
     @FXML
     private TabPane editorTabs;
 
-
+    /**
+    * Opens a new Tab
+    */
     @FXML
     void newFile(ActionEvent event) {
-        Tab tab = new Tab("New Tab");
+        Tab tab = new Tab("Untitled Tab");
         editorTabs.getTabs().add(tab);
         tab.setContent(new TextArea("Sample text"));
-        this.textHistory.put(tab, new TextHistory());
     }
 
     /**
@@ -88,9 +80,9 @@ public class Main extends Application{
         File file = fileChooser.showOpenDialog(thisStage);
         if (file != null){
             textArea().setText(readFile(file));
+            currentTab().setText(file.getName());
+            this.filePaths.put(currentTab(),file.getPath());
         }
-
-        currentTab().setText(file.getName());
     }
     
     /**
@@ -100,7 +92,9 @@ public class Main extends Application{
     */
     @FXML
     void saveFile(ActionEvent event) {
-        File currentFile = new File("./" + currentTab().getText() ); //This needs to be done differently
+        String filepath = this.filePaths.get(currentTab());
+        File currentFile = new File(filepath);
+        System.out.println(currentFile);
         if (currentFile.exists()){
             SaveFile(textArea().getText(), currentFile);
         }
@@ -109,8 +103,6 @@ public class Main extends Application{
         }
         
     }
-
-    
 
     /**
     * prompts user to save file with a specific name
@@ -124,13 +116,10 @@ public class Main extends Application{
         File file = fileChooser.showSaveDialog(thisStage);
         if(file != null){
             SaveFile(textArea().getText(), file);
+            //set name of tab to name of file
+            currentTab().setText(file.getName());
+            this.filePaths.put(currentTab(),file.getPath());
         }
-
-<<<<<<< Updated upstream
-=======
-        //set name of tab to name of file
->>>>>>> Stashed changes
-        currentTab().setText(file.getName());
     }
 
     /**
@@ -138,15 +127,34 @@ public class Main extends Application{
     */
     @FXML
     void closeFile(ActionEvent event) {
-        File currentFile = new File("./" + currentTab().getText() );// Again, this does not work
+        String filepath = this.filePaths.get(currentTab());
+        File currentFile = new File(filepath );
         if (currentFile.exists()){
-            currentTab().getTabPane().getTabs().remove(currentTab());
+            String savedText = readFile(currentFile);
+            if(savedText.equals(textArea().getText())){
+                currentTab().getTabPane().getTabs().remove(currentTab());
+            }else{
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("Current project is modified");
+                alert.setContentText("Save?");
+                ButtonType okButton = new ButtonType("Yes", ButtonBar.ButtonData.YES);
+                ButtonType noButton = new ButtonType("Yes", ButtonBar.ButtonData.NO);
+                ButtonType cancelButton = new ButtonType("Yes", ButtonBar.ButtonData.CANCEL_CLOSE);
+                alert.getButtonTypes().setAll(okButton, noButton, cancelButton);
+                alert.showAndWait().ifPresent(type -> {
+                    if (type == ButtonType.OK) {
+                        saveFile(event);
+                    } else if (type == ButtonType.NO) {
+                        currentTab().getTabPane().getTabs().remove(currentTab());
+                    } else {
+                    }
+                });
+            }
         }
         else{
             saveFileAs(event);
             currentTab().getTabPane().getTabs().remove(currentTab());
         }
-        
     }
 
     /**
@@ -158,8 +166,6 @@ public class Main extends Application{
         ClipboardContent content = new ClipboardContent();
         content.putString(textArea().getSelectedText());
         systemClipboard.setContent(content);
-
-
     }
 
     /**
@@ -182,8 +188,6 @@ public class Main extends Application{
         textArea().insertText(textArea().getCaretPosition(), clipboardText);
     }
 
-
-
     /**
     * highlights all text in current tab 
     */
@@ -196,13 +200,13 @@ public class Main extends Application{
     void saveState(KeyEvent event) {
         TextHistory currentHistory = this.textHistory.get(currentTab());
         if(currentHistory != null){
-            System.out.println("Add to existing id:" + currentTab());
+            //System.out.println("Add to existing id:" + currentTab());
             currentHistory.save(textArea().getText());
 
         }else{
-            System.out.println("Create history for id:" + currentTab());
+            //System.out.println("Create history for id:" + currentTab());
             this.textHistory.put(currentTab(), new TextHistory());
-            System.out.println("First add");
+            //System.out.println("First add");
             currentHistory = this.textHistory.get(currentTab());
             currentHistory.save(textArea().getText());
         }
@@ -216,11 +220,11 @@ public class Main extends Application{
         TextHistory tabHistory = this.textHistory.get(currentTab());
         String lastState = tabHistory.undo();
         if(lastState != null){
-            System.out.println("undo id:" + currentTab());
+            //System.out.println("undo id:" + currentTab());
             textArea().setText(lastState);
-        }else{
-            System.out.println("error dialog");
+            return;
         }
+        //System.out.println("no undo");
     }
 
     /**
@@ -233,9 +237,9 @@ public class Main extends Application{
         if(nextState != null){
             System.out.println("redo id:" + currentTab());
             textArea().setText(nextState);
-        }else{
-            System.out.println("error dialog");
+            return;
         }
+        //System.out.println("no redo");
     }
 
     @FXML
@@ -283,7 +287,6 @@ public class Main extends Application{
         }
     }
 
-    
     /**
      * The main entry point for all JavaFX applications.
      * Called on the JavaFX Application Thread.
