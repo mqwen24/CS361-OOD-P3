@@ -9,6 +9,7 @@ import java.util.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.Button;
@@ -213,6 +214,7 @@ public class Controller {
     void exitProgram(ActionEvent event) {
         ArrayList<Tab> tabsToDelete = new ArrayList<Tab>();
         Boolean exitCancel = false;
+        
         //check if all saved
         for (Tab tab : editorTabs.getTabs()){
             tabsToDelete.add(tab);
@@ -223,7 +225,7 @@ public class Controller {
                 return;
             }
         }
-        System.exit(0);
+        Platform.exit();
     }
 
     @FXML
