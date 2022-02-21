@@ -41,11 +41,11 @@ import javafx.scene.input.KeyEvent;
 
 public class Main extends Application{
 
-    private Map<String, TextHistory> textHistory 
-        = new HashMap<String, TextHistory>();
+    private Map<Tab, TextHistory> textHistory 
+        = new HashMap<Tab, TextHistory>();
 
-    private Map<String, String> filePaths
-        = new HashMap<String, String>();
+    private Map<Tab, String> filePaths
+        = new HashMap<Tab, String>();
 
     private Clipboard systemClipboard = Clipboard.getSystemClipboard();
 
@@ -65,7 +65,7 @@ public class Main extends Application{
         Tab tab = new Tab("Tab");
         editorTabs.getTabs().add(tab);
         tab.setContent(new TextArea("Sample text"));
-        this.textHistory.put(tab.getId(), new TextHistory());
+        this.textHistory.put(tab, new TextHistory());
     }
 
     /**
@@ -157,16 +157,16 @@ public class Main extends Application{
 
     @FXML
     void saveState(KeyEvent event) {
-        TextHistory currentHistory = this.textHistory.get(currentTab().getId());
+        TextHistory currentHistory = this.textHistory.get(currentTab());
         if(currentHistory != null){
-            System.out.println("Offer to existing");
+            System.out.println("Add to existing id:" + currentTab());
             currentHistory.save(textArea().getText());
 
         }else{
-            System.out.println("Create stack");
-            this.textHistory.put(currentTab().getId(), new TextHistory());
-            System.out.println("offer State");
-            currentHistory = this.textHistory.get(currentTab().getId());
+            System.out.println("Create history for id:" + currentTab());
+            this.textHistory.put(currentTab(), new TextHistory());
+            System.out.println("First add");
+            currentHistory = this.textHistory.get(currentTab());
             currentHistory.save(textArea().getText());
         }
     }
@@ -176,9 +176,10 @@ public class Main extends Application{
     */
     @FXML
     void undo(ActionEvent event) {
-        TextHistory tabHistory = this.textHistory.get(currentTab().getId());
+        TextHistory tabHistory = this.textHistory.get(currentTab());
         String lastState = tabHistory.undo();
         if(lastState != null){
+            System.out.println("undo id:" + currentTab());
             textArea().setText(lastState);
         }else{
             System.out.println("error dialog");
@@ -190,9 +191,10 @@ public class Main extends Application{
     */
     @FXML
     void redo(ActionEvent event) {
-        TextHistory tabHistory = this.textHistory.get(currentTab().getId());
+        TextHistory tabHistory = this.textHistory.get(currentTab());
         String nextState = tabHistory.redo();
         if(nextState != null){
+            System.out.println("redo id:" + currentTab());
             textArea().setText(nextState);
         }else{
             System.out.println("error dialog");

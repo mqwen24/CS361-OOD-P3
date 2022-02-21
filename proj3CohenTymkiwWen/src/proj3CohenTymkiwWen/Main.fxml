@@ -54,11 +54,11 @@ Date: February 18, 2022
             <Button id="goodbyeButton" mnemonicParsing="false" onAction="#goodbyePressed" styleClass="goodbyeStyle" stylesheets="@Main.css" text="Goodbye" />
          </items>
       </ToolBar>
-      <TabPane fx:id="editorTabs" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
+      <TabPane fx:id="editorTabs" onKeyReleased="#saveState" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
         <tabs>
           <Tab text="Untitled Tab ">
                <content>
-                  <TextArea onKeyReleased="#saveState" prefHeight="200.0" prefWidth="200.0" text="Sample text" />
+                  <TextArea prefHeight="200.0" prefWidth="200.0" text="Sample text" />
                </content>
           </Tab>
         </tabs>
