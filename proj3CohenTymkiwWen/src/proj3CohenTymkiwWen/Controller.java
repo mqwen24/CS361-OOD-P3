@@ -366,10 +366,13 @@ public class Controller {
             currentTab.getTabPane().getTabs().remove(currentTab);
         }
         // decide if user "cancelled"
-        if(currentTab().getTabPane().getTabs().contains(currentTab)){
-            return true;
-        }else{
-            return false;
+        if(! editorTabs.getTabs().isEmpty()){
+            if(currentTab().getTabPane().getTabs().contains(currentTab)){
+                return true;
+            }else{
+                return false;
+            }
         }
+        return false;
     }
 }
