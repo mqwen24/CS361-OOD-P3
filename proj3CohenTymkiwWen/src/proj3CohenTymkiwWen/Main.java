@@ -124,6 +124,7 @@ public class Main extends Application{
 
     /**
     * Checks if file is saved and exits
+    * if file is not saves, the user is prompted to save
     */
     @FXML
     void closeFile(ActionEvent event) {
@@ -146,16 +147,16 @@ public class Main extends Application{
                     if (type.getButtonData().equals(ButtonBar.ButtonData.YES)) {
                         System.out.println("ok pressed");
                         saveFile(event);
+                        currentTab().getTabPane().getTabs().remove(currentTab());
                     } else if (type.getButtonData().equals(ButtonBar.ButtonData.NO)){
                         System.out.println("no pressed");
-                        return;
+                        currentTab().getTabPane().getTabs().remove(currentTab());
                     } else {
                         System.out.println("cancel pressed");
                         return;
                     }
                 });
             }
-            currentTab().getTabPane().getTabs().remove(currentTab());
         }
         else{
             saveFileAs(event);
