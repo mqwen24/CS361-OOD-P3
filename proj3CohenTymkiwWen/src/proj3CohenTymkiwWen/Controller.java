@@ -9,35 +9,39 @@
 */
 package proj3CohenTymkiwWen;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javafx.fxml.FXML;
-import javafx.stage.FileChooser;
-import javafx.stage.Stage;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
-import javafx.scene.control.TabPane;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextInputDialog;
-import java.util.Optional;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.ButtonBar;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.Tab;
+import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
-import javafx.stage.FileChooser.ExtensionFilter;
-import java.util.Map;
-import java.util.HashMap;
 import javafx.scene.input.KeyEvent;
-import java.io.*;
-import java.util.ArrayList;
+import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
+import javafx.stage.Stage;
+
+
 public class Controller {
 
     protected Map<Tab, TextHistory> textHistory 
