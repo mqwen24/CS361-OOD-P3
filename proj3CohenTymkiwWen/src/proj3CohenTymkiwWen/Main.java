@@ -262,6 +262,9 @@ public class Main extends Application{
     @FXML
     void exitProgram(ActionEvent event) {
         //check if all saved
+        for (Tab tab : editorTabs.getTabs()){
+            closeFile(event);
+        }
         System.exit(0);
     }
 
