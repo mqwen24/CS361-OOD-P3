@@ -138,18 +138,24 @@ public class Main extends Application{
                 alert.setTitle("Current project is modified");
                 alert.setContentText("Save?");
                 ButtonType okButton = new ButtonType("Yes", ButtonBar.ButtonData.YES);
-                ButtonType noButton = new ButtonType("Yes", ButtonBar.ButtonData.NO);
-                ButtonType cancelButton = new ButtonType("Yes", ButtonBar.ButtonData.CANCEL_CLOSE);
+                ButtonType noButton = new ButtonType("No", ButtonBar.ButtonData.NO);
+                ButtonType cancelButton = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
                 alert.getButtonTypes().setAll(okButton, noButton, cancelButton);
                 alert.showAndWait().ifPresent(type -> {
-                    if (type == ButtonType.OK) {
+                    System.out.println(type.toString());
+                    if (type.getButtonData().equals(ButtonBar.ButtonData.YES)) {
+                        System.out.println("ok pressed");
                         saveFile(event);
-                    } else if (type == ButtonType.NO) {
-                        currentTab().getTabPane().getTabs().remove(currentTab());
+                    } else if (type.getButtonData().equals(ButtonBar.ButtonData.NO)){
+                        System.out.println("no pressed");
+                        return;
                     } else {
+                        System.out.println("cancel pressed");
+                        return;
                     }
                 });
             }
+            currentTab().getTabPane().getTabs().remove(currentTab());
         }
         else{
             saveFileAs(event);
@@ -235,7 +241,7 @@ public class Main extends Application{
         TextHistory tabHistory = this.textHistory.get(currentTab());
         String nextState = tabHistory.redo();
         if(nextState != null){
-            System.out.println("redo id:" + currentTab());
+            //System.out.println("redo id:" + currentTab());
             textArea().setText(nextState);
             return;
         }

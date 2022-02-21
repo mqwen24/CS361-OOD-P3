@@ -18,10 +18,12 @@ public class TextHistory
     }
 
     public String undo() {
-        if(! this.undo.isEmpty()){
+        if(! this.undo.empty()){
             String lastState = this.undo.pop();
             this.redo.add(lastState);
-            return this.undo.peek();
+            if(! this.undo.empty()){
+                return this.undo.peek();
+            }
         }
         return null;
     }
