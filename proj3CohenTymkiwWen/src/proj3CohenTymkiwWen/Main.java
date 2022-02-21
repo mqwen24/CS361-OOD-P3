@@ -112,7 +112,7 @@ public class Main extends Application{
     void copy(ActionEvent event) {
 
         ClipboardContent content = new ClipboardContent();
-        content.putString(textArea().getSelectedText());// This could cause the program to crash if the user hasn't selected anything. We could create a helper method to avoid this
+        content.putString(textArea().getSelectedText());
         systemClipboard.setContent(content);
 
 
@@ -123,7 +123,10 @@ public class Main extends Application{
     */
     @FXML
     void cut(ActionEvent event) {
-
+        ClipboardContent content = new ClipboardContent();
+        content.putString(textArea().getSelectedText());
+        systemClipboard.setContent(content);
+        textArea().replaceSelection("");
     }
 
     /**
@@ -131,8 +134,8 @@ public class Main extends Application{
     */
     @FXML
     void paste(ActionEvent event) { 
-
-
+        String clipboardText = systemClipboard.getString();
+        textArea().insertText(textArea().getCaretPosition(), clipboardText);
     }
 
 
