@@ -93,15 +93,18 @@ public class Main extends Application{
     @FXML
     void saveFile(ActionEvent event) {
         String filepath = this.filePaths.get(currentTab());
-        File currentFile = new File(filepath);
-        System.out.println(currentFile);
-        if (currentFile.exists()){
-            SaveFile(textArea().getText(), currentFile);
-        }
-        else{
+        if(filepath != null){
+            File currentFile = new File(filepath);
+            System.out.println(currentFile);
+            if (currentFile.exists()){
+                SaveFile(textArea().getText(), currentFile);
+            }
+            else{
+                saveFileAs(event);
+            }
+        }else{
             saveFileAs(event);
         }
-        
     }
 
     /**
@@ -129,36 +132,40 @@ public class Main extends Application{
     @FXML
     void closeFile(ActionEvent event) {
         String filepath = this.filePaths.get(currentTab());
-        File currentFile = new File(filepath );
-        if (currentFile.exists()){
-            String savedText = readFile(currentFile);
-            if(savedText.equals(textArea().getText())){
-                currentTab().getTabPane().getTabs().remove(currentTab());
+        if(filepath != null){
+            File currentFile = new File(filepath );
+            if (currentFile.exists()){
+                String savedText = readFile(currentFile);
+                if(savedText.equals(textArea().getText())){
+                    currentTab().getTabPane().getTabs().remove(currentTab());
+                }else{
+                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                    alert.setTitle("Current project is modified");
+                    alert.setContentText("Save?");
+                    ButtonType okButton = new ButtonType("Yes", ButtonBar.ButtonData.YES);
+                    ButtonType noButton = new ButtonType("No", ButtonBar.ButtonData.NO);
+                    ButtonType cancelButton = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
+                    alert.getButtonTypes().setAll(okButton, noButton, cancelButton);
+                    alert.showAndWait().ifPresent(type -> {
+                        System.out.println(type.toString());
+                        if (type.getButtonData().equals(ButtonBar.ButtonData.YES)) {
+                            System.out.println("ok pressed");
+                            saveFile(event);
+                            currentTab().getTabPane().getTabs().remove(currentTab());
+                        } else if (type.getButtonData().equals(ButtonBar.ButtonData.NO)){
+                            System.out.println("no pressed");
+                            currentTab().getTabPane().getTabs().remove(currentTab());
+                        } else {
+                            System.out.println("cancel pressed");
+                            return;
+                        }
+                    });
+                }
             }else{
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                alert.setTitle("Current project is modified");
-                alert.setContentText("Save?");
-                ButtonType okButton = new ButtonType("Yes", ButtonBar.ButtonData.YES);
-                ButtonType noButton = new ButtonType("No", ButtonBar.ButtonData.NO);
-                ButtonType cancelButton = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
-                alert.getButtonTypes().setAll(okButton, noButton, cancelButton);
-                alert.showAndWait().ifPresent(type -> {
-                    System.out.println(type.toString());
-                    if (type.getButtonData().equals(ButtonBar.ButtonData.YES)) {
-                        System.out.println("ok pressed");
-                        saveFile(event);
-                        currentTab().getTabPane().getTabs().remove(currentTab());
-                    } else if (type.getButtonData().equals(ButtonBar.ButtonData.NO)){
-                        System.out.println("no pressed");
-                        currentTab().getTabPane().getTabs().remove(currentTab());
-                    } else {
-                        System.out.println("cancel pressed");
-                        return;
-                    }
-                });
+                saveFileAs(event);
+                currentTab().getTabPane().getTabs().remove(currentTab());
             }
-        }
-        else{
+        }else{
             saveFileAs(event);
             currentTab().getTabPane().getTabs().remove(currentTab());
         }
