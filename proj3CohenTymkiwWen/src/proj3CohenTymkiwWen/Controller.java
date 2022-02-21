@@ -1,3 +1,12 @@
+/**
+ * CS361 OOP project 3 GUI iteration
+ * 
+ * @author Erik Cohen
+ * @author Dylan Tymkiw
+ * @author Muqing Wen
+ * @version 1.3
+ * @since 1.0
+*/
 package proj3CohenTymkiwWen;
 
 import java.io.File;
