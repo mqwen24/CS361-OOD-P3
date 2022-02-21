@@ -27,7 +27,7 @@ import java.util.Map;
 import java.util.HashMap;
 import javafx.scene.input.KeyEvent;
 import java.io.*;
-
+import java.util.ArrayList;
 public class Controller {
 
     protected Map<Tab, TextHistory> textHistory 
@@ -211,9 +211,17 @@ public class Controller {
 
     @FXML
     void exitProgram(ActionEvent event) {
+        ArrayList<Tab> tabsToDelete = new ArrayList<Tab>();
+        Boolean exitCancel = false;
         //check if all saved
         for (Tab tab : editorTabs.getTabs()){
-            closeTab(tab, event);
+            tabsToDelete.add(tab);
+        }
+        for (Tab tab : tabsToDelete){
+            exitCancel = closeTab(tab, event);
+            if(exitCancel){
+                return;
+            }
         }
         System.exit(0);
     }
