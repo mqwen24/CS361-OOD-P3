@@ -7,12 +7,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.application.Application;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import javafx.scene.Scene;
-import javafx.scene.Parent;
 import javafx.event.ActionEvent;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.Button;
