@@ -211,6 +211,9 @@ public class Main extends Application{
     }
 
     @FXML
+    /*
+    *   save current content of text area when (any) key is pressed
+     */
     void saveState(KeyEvent event) {
         TextHistory currentHistory = this.textHistory.get(currentTab());
         if(currentHistory != null){
