@@ -30,7 +30,9 @@ public class TextHistory
 
     public String redo(){
         if(! this.redo.isEmpty()){
-            return this.redo.pop();
+            String redoVal = this.redo.pop();
+            this.undo.push(redoVal);
+            return redoVal;
         }
         return null;
     }

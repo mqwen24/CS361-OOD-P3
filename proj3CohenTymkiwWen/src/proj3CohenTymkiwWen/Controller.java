@@ -295,7 +295,7 @@ public class Controller {
         return stringBuffer.toString();
     }
 
-            /**
+    /**
      * helper method to get the selected tab
      * 
      * @return TextArea the textarea of the selected tab
